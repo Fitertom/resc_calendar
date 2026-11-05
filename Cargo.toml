@@ -1,0 +1,39 @@
+[package]
+name = "glint-calendar"
+version = "0.1.0"
+edition = "2024"
+description = "A calendar that opens from the taskbar clock: Win32 + GDI on a blurred backdrop."
+license = "MIT"
+
+[dependencies]
+windows-link = "0.2"
+windows-sys = { version = "0.61", features = [
+    "Win32_Foundation",
+    "Win32_Graphics_Dwm",
+    "Win32_Graphics_Gdi",
+    "Win32_System_Com",
+    "Win32_System_DataExchange",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Memory",
+    "Win32_System_Registry",
+    "Win32_System_SystemInformation",
+    "Win32_System_Threading",
+    "Win32_UI_Controls",
+    "Win32_UI_HiDpi",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_UI_WindowsAndMessaging",
+] }
+
+[build-dependencies]
+# Only to rasterise assets/logo.svg at build time; none of it reaches the exe.
+resvg = { version = "0.45", default-features = false }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.dev]
+opt-level = 1

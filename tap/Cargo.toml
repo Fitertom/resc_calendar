@@ -1,0 +1,27 @@
+[package]
+name = "glint-calendar-tap"
+version = "0.1.0"
+edition = "2021"
+description = "Loaded into explorer.exe through XAML diagnostics: tells Glint Calendar when the taskbar clock is clicked."
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+windows-core = "0.62"
+windows-link = "0.2"
+windows-numerics = "0.3"
+windows-collections = "0.3"
+
+# INSIDE EXPLORER A PANIC MUST NOT ABORT: it would take the taskbar down with it. Every entry
+# point catches unwinding instead.
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "unwind"
+strip = true
+
+[profile.dev]
+panic = "unwind"
